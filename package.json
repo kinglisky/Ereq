@@ -1,0 +1,20 @@
+{
+  "name": "ereq",
+  "version": "1.0.0",
+  "description": "一个简单的 Ajax 客服端",
+  "main": "index.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kinglisky/Ereq.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kinglisky/Ereq/issues"
+  },
+  "homepage": "https://github.com/kinglisky/Ereq#readme"
+}
