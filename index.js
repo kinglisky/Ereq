@@ -132,10 +132,11 @@
   }
 
   Ereq.util = {
-    serialize: serialize,
     isType: isType,
     merge: merge,
-    fetcher: fetcher
+    fetcher: fetcher,
+    serialize: serialize,
+    buildErrInfo: buildErrInfo
   }
 
   if (typeof exports === 'object') {

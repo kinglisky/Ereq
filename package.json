@@ -1,6 +1,6 @@
 {
   "name": "ereq",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "一个简单的 Ajax 客服端",
   "main": "index.min.js",
   "scripts": {
