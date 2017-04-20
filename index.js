@@ -54,7 +54,7 @@
     xhr.open(method, url)
     xhr.onload = function () {
       if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
-        onsuccess(xhr.responseText)
+        onsuccess(xhr)
       } else {
         onerror(xhr)
       }
@@ -73,29 +73,36 @@
     return {
       msg: msg,
       status: xhr.status,
+      timeout: xhr.timeout,
       statusText: xhr.statusText,
       responseURL: xhr.responseURL,
-      timeout: xhr.timeout
+      responseText: xhr.responseText
     }
+  }
+
+  var ERROR = {
+    PARSE: '数据解析出错',
+    REQUEST: '请求出错',
+    TIMEOUT: '请求超时'
   }
 
   // 默认的一些请求处理函数
   var DEFAULT_HANDLERS = {
-    successHandler: function (resText, resolve, reject) {
+    successHandler: function (xhr, resolve, reject) {
       var res = null
       try {
-        res = JSON.parse(resText)
+        res = JSON.parse(xhr.responseText)
       } catch (e) {
-        reject(buildErrInfo('PARSE ERROR'))
+        reject(buildErrInfo(ERROR.PARSE, xhr))
         return
       }
       resolve(res)
     },
     errorHandler: function (xhr, reject) {
-      reject(buildErrInfo('REQUEST ERROR', xhr))
+      reject(buildErrInfo(ERROR.REQUEST, xhr))
     },
     timeoutHandler: function (xhr, reject) {
-      reject(buildErrInfo('TIMEOUT', xhr))
+      reject(buildErrInfo(ERROR.TIMEOUT, xhr))
     }
   }
 
@@ -116,8 +123,8 @@
       var mixOpts = merge(baseOptions, options)
       return new Promise(function (resolve, reject) {
         var fullOptions = merge(mixOpts, {
-          onsuccess: function (resText) {
-            successHandler(resText, resolve, reject)
+          onsuccess: function (xhr) {
+            successHandler(xhr, resolve, reject)
           },
           onerror: function (xhr) {
             errorHandler(xhr, reject)
