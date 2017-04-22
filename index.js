@@ -18,6 +18,18 @@
     return Object.assign.apply(Object, [{}].concat(args))
   }
 
+  function parse (json) {
+    var data = ''
+    var err = false
+    try {
+      data = JSON.parse(json)
+    } catch (e) {
+      data = json
+      err = true
+    }
+    return { data: data, err: err }
+  }
+
   // 对一些参数进行预处理
   function beforHandler (options) {
     var method = options.method.toUpperCase()
@@ -76,7 +88,8 @@
       timeout: xhr.timeout,
       statusText: xhr.statusText,
       responseURL: xhr.responseURL,
-      responseText: xhr.responseText
+      responseText: xhr.responseText,
+      info: parse(xhr.responseText).data
     }
   }
 
@@ -89,14 +102,12 @@
   // 默认的一些请求处理函数
   var DEFAULT_HANDLERS = {
     successHandler: function (xhr, resolve, reject) {
-      var res = null
-      try {
-        res = JSON.parse(xhr.responseText)
-      } catch (e) {
+      var res = parse(xhr.responseText)
+      if (res.err) {
         reject(buildErrInfo(ERROR.PARSE, xhr))
         return
       }
-      resolve(res)
+      resolve(res.data)
     },
     errorHandler: function (xhr, reject) {
       reject(buildErrInfo(ERROR.REQUEST, xhr))
@@ -139,6 +150,7 @@
   }
 
   Ereq.util = {
+    parse: parse,
     isType: isType,
     merge: merge,
     fetcher: fetcher,
