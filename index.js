@@ -33,10 +33,10 @@
   // 对一些参数进行预处理
   function beforHandler (options) {
     var method = options.method.toUpperCase()
-    var baseUrl = options.baseUrl
-    var url = options.url
+    var baseUrl = options.baseUrl || ''
+    var url = options.url || ''
     var params = options.params
-    url = baseUrl ? (baseUrl.replace(/\/$/, '') + '/' + url) : url
+    url = baseUrl.replace(/\/$/, '') + '/' + url.replace(/^\/|\/$/g, '')
     options.url = url
     options.method = method
     if (method === 'GET') {
