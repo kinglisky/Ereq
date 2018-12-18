@@ -36,7 +36,7 @@
     var baseUrl = options.baseUrl
     var url = options.url
     var params = options.params
-    url = baseUrl ? (baseUrl + '/' + url) : url
+    url = baseUrl ? (baseUrl.replace(/\/$/, '') + '/' + url) : url
     options.url = url
     options.method = method
     if (method === 'GET') {
